@@ -307,11 +307,36 @@ typedef void (^RMStoreSuccessBlock)();
 
 + (NSString*)localizedPriceOfProduct:(SKProduct*)product
 {
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
-	numberFormatter.locale = product.priceLocale;
-	NSString *formattedString = [numberFormatter stringFromNumber:product.price];
-	return formattedString;
+	return [self localizedPriceStringWithPrice:product.price priceLocale:product.priceLocale];
+}
+
+(NSString*)localizedPriceStringWithPrice:(NSDecimalNumber*)price priceLocale:(NSLocale*)priceLocale
+{
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    numberFormatter.locale = priceLocale;
+    NSString *formattedString = [numberFormatter stringFromNumber:price];
+    return formattedString;
+}
+
+(NSString*)stringForPaymentMode:(SKProductDiscountPaymentMode)paymentMode
+{
+    switch (paymentMode) {
+        case SKProductDiscountPaymentModeFreeTrial: return @"FreeTrial";
+        case SKProductDiscountPaymentModePayAsYouGo: return @"PayAsYouGo";
+        case SKProductDiscountPaymentModePayUpFront: return @"PayUpFront";
+    }
+    return @"unknown";
+}
+ + (NSString*)stringForPeriodUnit:(SKProductPeriodUnit)unit
+{
+    switch (unit) {
+        case SKProductPeriodUnitDay: return @"day";
+        case SKProductPeriodUnitWeek: return @"week";
+        case SKProductPeriodUnitMonth: return @"month";
+        case SKProductPeriodUnitYear: return @"year";
+    }
+    return @"unknown";
 }
 
 #pragma mark Observers

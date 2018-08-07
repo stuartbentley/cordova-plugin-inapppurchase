@@ -38,14 +38,41 @@
         [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         [numberFormatter setLocale:product.priceLocale];
         NSString *currencyCode = [numberFormatter currencyCode];
+
+        NSNumber *isIntroductoryPriceSupported = @0;
+          NSDictionary *introductoryPriceInfo = nil;
+          if (@available(iOS 11.2, *)) {
+            isIntroductoryPriceSupported = @1;
+            if (product.introductoryPrice) {
+              SKProductDiscount *ip = product.introductoryPrice;
+              NSLocale *ipPriceLocale = ip.priceLocale;
+              if (!ipPriceLocale) {
+                ipPriceLocale = product.priceLocale;
+              }
+               introductoryPriceInfo = @{
+                                       @"price": NILABLE([RMStore localizedPriceStringWithPrice:ip.price priceLocale:ipPriceLocale]),
+                                       @"priceRaw": NILABLE([ip.price stringValue]),
+                                       @"country": NILABLE([ipPriceLocale objectForKey:NSLocaleCountryCode]),
+                                       @"currency": NILABLE([ipPriceLocale objectForKey:NSLocaleCurrencyCode]),
+                                       @"paymentMode": NILABLE([RMStore stringForPaymentMode:ip.paymentMode]),
+                                       @"numberOfPeriods": [NSString stringWithFormat:@"%lu", ip.numberOfPeriods],
+                                       @"subscriptionPeriod": @{
+                                                @"unit": [RMStore stringForPeriodUnit:ip.subscriptionPeriod.unit],
+                                                @"numberOfUnits": [NSString stringWithFormat:@"%lu", ip.subscriptionPeriod.numberOfUnits],
+                                            }
+                                        };
+            }
+          }
         
-        [validProducts addObject:@{
+          [validProducts addObject:@{
                                  @"productId": NILABLE(product.productIdentifier),
                                  @"title": NILABLE(product.localizedTitle),
                                  @"description": NILABLE(product.localizedDescription),
                                  @"priceAsDecimal": NILABLE(product.price),
                                  @"price": NILABLE([RMStore localizedPriceOfProduct:product]),
-                                 @"currency": NILABLE(currencyCode)
+                                 @"currency": NILABLE(currencyCode),
+                                 @"introductoryPrice": NILABLE(introductoryPriceInfo),
+                                 @"introductoryPriceSupported": isIntroductoryPriceSupported
                                  }];
     }
     [result setObject:validProducts forKey:@"products"];
