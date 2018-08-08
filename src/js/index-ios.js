@@ -20,14 +20,19 @@ const nativeCall = (name, args = []) => {
 };
 
 inAppPurchase.getProducts = (productIds) => {
+
+    console.log('getProducts plugin');
+
     return new Promise((resolve, reject) => {
         if(!inAppPurchase.utils.validArrayOfStrings(productIds)) {
             reject(new Error(inAppPurchase.utils.errors[101]));
         } else {
             return nativeCall('getProducts', [productIds]).then((res) => {
                 if (!res || !res.products) {
+                    console.log('no products');
                     resolve([]);
                 } else {
+                    console.log(val);
                     const arr = res.products.map((val) => {
                         return {
                             productId   : val.productId,
