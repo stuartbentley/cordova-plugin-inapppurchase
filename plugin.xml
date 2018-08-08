@@ -2,15 +2,15 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
-  id="cordova-plugin-inapppurchase"
+  id="mt-cordova-plugin-inapppurchase"
   version="1.1.0">
 
-  <name>In App Purchase</name>
+  <name>Mt In App Purchase</name>
   <description>A lightweight cordova plugin for in app purchases on iOS and Android with a simple promise based API.</description>
   <engines>
     <engine name="cordova" version=">=5.0.0" />
   </engines>
-  <repo>https://github.com/AlexDisler/cordova-plugin-inapppurchase.git</repo>
+  <repo>https://github.com/stuartbentley/cordova-plugin-inapppurchase.git</repo>
   <issue>https://github.com/AlexDisler/cordova-plugin-inapppurchase/issues</issue>
 
   <license>MIT</license>
